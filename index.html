@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmavise Ultimate OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <i class="fa-solid fa-staff-snake logo-icon"></i>
+                <h1 class="logo-text">Pharmavise</h1>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="dashboard">
+                    <i class="fa-solid fa-house"></i> Home
+                </button>
+                <button class="nav-item" data-tab="inventory">
+                    <i class="fa-solid fa-boxes-stacked"></i> Inventory
+                </button>
+                <button class="nav-item" data-tab="ai">
+                    <i class="fa-solid fa-robot"></i> AI Assistant
+                </button>
+                <button class="nav-item" data-tab="billing">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Billing
+                </button>
+                <button class="nav-item" data-tab="admin">
+                    <i class="fa-solid fa-user-tie"></i> Admin
+                </button>
+                <button class="nav-item premium-btn" data-tab="premium" id="premium-btn">
+                    <i class="fa-solid fa-crown"></i> Premium
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="topbar">
+                <div class="search-sort-container hidden" id="topbar-search-sort">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="global-search" placeholder="Search Inventory...">
+                    </div>
+                    <select id="sort-select" class="sort-dropdown">
+                        <option value="default">Sort By: Default</option>
+                        <option value="expiry-asc">Expiry: Closest First</option>
+                        <option value="expiry-desc">Expiry: Furthest First</option>
+                        <option value="stock-asc">Stock: Low to High</option>
+                        <option value="stock-desc">Stock: High to Low</option>
+                    </select>
+                </div>
+                <div class="topbar-spacer" id="topbar-spacer"></div>
+                <div class="user-profile">
+                    <div class="avatar">ID</div>
+                    <span>Divya & Dharmraj</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Tab -->
+            <section id="dashboard-tab" class="tab-pane active">
+                <h2 class="page-title">Command Center Dashboard</h2>
+
+                <!-- Metrics Cards -->
+                <div class="dashboard-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-pills"></i></div>
+                        <div class="stat-details">
+                            <h3>Total Medicines</h3>
+                            <p id="stat-total-meds">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+                        <div class="stat-details">
+                            <h3>Total Sections</h3>
+                            <p id="stat-total-sections">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div class="stat-details">
+                            <h3>Expiring Soon (30 Days)</h3>
+                            <p id="stat-expiring-soon">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card danger">
+                        <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="stat-details">
+                            <h3>Already Expired</h3>
+                            <p id="stat-expired">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Priority Dispatch (FEFO) -->
+                <div class="fefo-dispatch-section">
+                    <h3 class="section-subtitle">Priority Dispatch (FEFO)</h3>
+                    <div class="fefo-card" id="fefo-display">
+                        <p class="text-muted">No medicines in stock to recommend for dispatch.</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid layout-2col">
+                    <!-- Environmental Monitoring -->
+                    <div class="env-monitoring-section card">
+                        <h3 class="section-subtitle">Environmental Monitoring</h3>
+                        <div class="env-grid" id="env-monitoring-grid">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Predictive Insights -->
+                    <div class="insights-section card">
+                        <h3 class="section-subtitle">System Warnings & Insights</h3>
+                        <div class="insights-list" id="insights-list">
+                            <div class="insight-item ai-insight">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <p>AI predicts a <strong>25% demand increase</strong> for Paracetamol next week.</p>
+                            </div>
+                            <!-- Dynamic low stock suggestions -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Inventory Tab -->
+            <section id="inventory-tab" class="tab-pane">
+                <h2 class="page-title">Warehouse Inventory</h2>
+
+                <!-- Top Row: Inventory Grid -->
+                <div class="inventory-grid">
+                    <!-- Left Card: Manage Storage Sections -->
+                    <div class="card sections-card">
+                        <h3 class="card-title">Manage Storage Sections</h3>
+                        <div class="form-group row">
+                            <input type="text" id="section-name" placeholder="New Section Name">
+                            <button id="add-section-btn" class="btn btn-primary">Add</button>
+                        </div>
+                        <div class="existing-sections">
+                            <h4>Active Sections</h4>
+                            <ul id="section-list" class="section-list">
+                                <!-- Dynamic List -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Card: Add Inventory Entry -->
+                    <div class="card add-medicine-card">
+                        <h3 class="card-title">Add Inventory Entry</h3>
+                        <form id="add-medicine-form" class="medicine-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Medicine Name</label>
+                                    <input type="text" id="med-name" required placeholder="Medicine Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select id="med-category" required>
+                                        <option value="" disabled selected>Select Category</option>
+                                        <option value="Tablet">Tablet</option>
+                                        <option value="Syrup">Syrup</option>
+                                        <option value="Injection">Injection</option>
+                                        <option value="Capsule">Capsule</option>
+                                        <option value="Ointment">Ointment</option>
+                                        <option value="Drops">Drops</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Batch Number</label>
+                                    <input type="text" id="med-batch" required placeholder="Batch Number">
+                                </div>
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input type="number" id="med-qty" required min="1" placeholder="Quantity">
+                                </div>
+                                <div class="form-group">
+                                    <label>Manufacturing Date</label>
+                                    <input type="date" id="med-mfg" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Expiry Date</label>
+                                    <input type="date" id="med-exp" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Storage Section</label>
+                                    <select id="med-section" required>
+                                        <option value="" disabled selected>Select Section</option>
+                                    </select>
+                                </div>
+                                <div class="form-group submit-group" style="display: flex; align-items: flex-end;">
+                                    <button type="submit" class="btn btn-primary full-width" style="height: 40px;">Add
+                                        to System</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Bottom Table: Inventory Database -->
+                <div class="card table-card">
+                    <h3 class="card-title">Inventory Database</h3>
+                    <div class="table-responsive">
+                        <table id="inventory-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Batch</th>
+                                    <th>Mfg Date</th>
+                                    <th>Expiry Date</th>
+                                    <th>Qty</th>
+                                    <th>Section</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-body">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Assistant Tab -->
+            <section id="ai-tab" class="tab-pane">
+                <h2 class="page-title">AI Assistant</h2>
+                <div class="chat-container card">
+                    <div class="chat-history" id="chat-history">
+                        <div class="chat-message ai-message">
+                            <div class="avatar ai-avatar"><i class="fa-solid fa-robot"></i></div>
+                            <div class="message-content">
+                                Hello Ishita & Dharmraj! I am your AI Assistant. How can I help you with Demand
+                                Predictions or Auto-order suggestions today?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-wrapper">
+                        <input type="text" id="chat-input" placeholder="Type your message...">
+                        <button id="chat-send" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Billing Tab -->
+            <section id="billing-tab" class="tab-pane">
+                <h2 class="page-title">Billing & Invoicing</h2>
+                
+                <div class="dashboard-grid layout-2col">
+                    <!-- Billing Form Card -->
+                    <div class="card billing-form-card">
+                        <h3 class="card-title">Create New Bill</h3>
+                        <form id="billing-form" class="medicine-form">
+                            <div class="form-group row">
+                                <label style="display: none;">Customer Name</label>
+                                <input type="text" id="bill-customer-name" required placeholder="Customer Name (e.g., John Doe)">
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group" style="position: relative;">
+                                    <label>Medicine Name</label>
+                                    <input type="text" id="bill-med-name" placeholder="Search Medicine..." autocomplete="off">
+                                    <ul id="bill-med-suggestions" class="autocomplete-list"></ul>
+                                </div>
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input type="number" id="bill-qty" min="1" placeholder="Qty">
+                                </div>
+                                <div class="form-group">
+                                    <label>Price</label>
+                                    <input type="number" id="bill-price" min="0" step="0.01" placeholder="Price per unit">
+                                </div>
+                                <div class="form-group submit-group" style="display: flex; align-items: flex-end;">
+                                    <button type="button" id="btn-add-to-bill" class="btn btn-primary full-width" style="height: 40px;">Add Medicine</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <!-- Current Bill Table -->
+                        <div class="table-responsive" style="margin-top: 20px;">
+                            <table id="current-bill-table">
+                                <thead>
+                                    <tr>
+                                        <th>Medicine</th>
+                                        <th>Qty</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="current-bill-body">
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div style="margin-top: 20px; text-align: right; font-size: 1.2rem; font-weight: bold;">
+                            Grand Total: $<span id="current-bill-total">0.00</span>
+                        </div>
+                        
+                        <div style="margin-top: 20px; display: flex; gap: 10px;">
+                            <button id="btn-generate-bill" class="btn btn-success" style="flex: 1;"><i class="fa-solid fa-check"></i> Generate Bill</button>
+                            <button id="btn-download-pdf" class="btn btn-primary" disabled title="Generate Bill First"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
+                            <button id="btn-export-excel" class="btn btn-primary" disabled title="Generate Bill First"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Bill History Card -->
+                    <div class="card bill-history-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3 class="card-title" style="margin: 0;">Bill History</h3>
+                            <button id="btn-clear-history" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Clear All</button>
+                        </div>
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <table class="history-table" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Total Amount</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bill-history-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Tab -->
+            <section id="admin-tab" class="tab-pane">
+                <h2 class="page-title">Admin Profile</h2>
+                <div class="admin-card card">
+                    <div class="admin-header">
+                        <div class="admin-avatar">I & D</div>
+                        <div class="admin-title">
+                            <h3>Divya & Dharmraj</h3>
+                            <p class="text-muted">System Architects & Administrators</p>
+                        </div>
+                    </div>
+                    <div class="admin-details">
+                        <h4>Project Overview</h4>
+                        <p>Pharmavise Ultimate OS. Built with precision relying on vanilla HTML, CSS, and JS (Zero
+                            Dependencies). Implements FEFO priority algorithms, predictive low stock features, and
+                            real-time environmental awareness integrations.</p>
+                        <h4>Core Focus</h4>
+                        <ul class="admin-stats" style="margin-top: 10px; padding-left: 20px;">
+                            <li><i class="fa-solid fa-check text-success"></i> Pixel-Perfect Layout Alignment</li>
+                            <li><i class="fa-solid fa-check text-success"></i> FEFO Inventory Priority Dispatch</li>
+                            <li><i class="fa-solid fa-check text-success"></i> Dynamic Storage & Status Badging</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Premium Modal -->
+            <div id="premium-modal" class="modal-overlay">
+                <div class="modal-content card">
+                    <button class="close-modal" id="close-premium">&times;</button>
+                    <div class="premium-header">
+                        <i class="fa-solid fa-crown gold-icon"></i>
+                        <h2>Pharmavise Premium</h2>
+                        <p>Upgrade for unlimited feature sets and AI endpoints.</p>
+                    </div>
+
+                    <div class="premium-features"
+                        style="margin-bottom: 24px; background: rgba(245, 158, 11, 0.05); padding: 16px; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.2);">
+                        <ul
+                            style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 14px; color: var(--text-main); font-weight: 500;">
+                            <li><i class="fa-solid fa-check" style="color: var(--success); width: 24px;"></i> Advanced
+                                AI Demand Forecasting</li>
+                            <li><i class="fa-solid fa-check" style="color: var(--success); width: 24px;"></i>
+                                Multi-Location Warehouse Sync</li>
+                            <li><i class="fa-solid fa-check" style="color: var(--success); width: 24px;"></i> Automated
+                                Supplier Ordering</li>
+                            <li><i class="fa-solid fa-check" style="color: var(--success); width: 24px;"></i> Enhanced
+                                Environmental IoT Tracking</li>
+                        </ul>
+                    </div>
+
+                    <form id="premium-form" class="premium-form">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" required placeholder="Name Defaults">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" required placeholder="name@domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" required placeholder="XXXX-XXXX-XXXX-XXXX">
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>Expiry Date</label>
+                                <input type="text" required placeholder="MM/YY">
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="password" required placeholder="CVV">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-gold full-width">Upgrade Now</button>
+                    </form>
+                    <div id="premium-success" class="premium-success hidden">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <h3>Success!</h3>
+                        <p>You are now a premium user.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="logic.js"></script>
+</body>
+
+</html>
